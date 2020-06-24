@@ -1,0 +1,63 @@
+<title>Insta-timer</title>
+<button onclick="start(this)" id="start">Start</button>
+<style>
+    body {margin: 0;}
+    #start {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: black;
+        color: rgba(255, 255, 255, 0.87);
+        font-size: 10vw;
+        font-family: cursive;
+        text-align: center;
+    }
+    #start:disabled {
+        color: rgba(255, 255, 255, 0.38);
+    }
+</style>
+<script>
+    /*TODO
+    * Change alerts to text warnings
+    * */
+    function checkNotificationPermission() {
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "denied") {
+                    alert('Notification disabled. Only sound is enabled.');
+                }
+            });
+        }
+    }
+
+    // Let's check if the browser supports notifications and audio
+    if (!("Notification" in window) || !("Audio" in window)) {
+        alert("This browser does not support notification or audio");
+    } else {
+        var audio = new Audio('alarm.mp3');
+        audio.loop = false;
+        checkNotificationPermission();
+    }
+
+    let params = (new URL(document.location)).searchParams;
+    let title = params.get("title");
+    let hours = params.get("hours");
+    let minutes = params.get("minutes");
+    let seconds = params.get("seconds");
+
+    let start = (target) => {
+        checkNotificationPermission();
+        target.disabled = true;
+        window.setTimeout(notify, ((hours * 60 * 60 + minutes * 60 + seconds) * 1000), title);
+    }
+
+    function notify(title) {
+        audio.play();
+        // Let's check whether notification permissions have already been granted
+        if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            new Notification(title);
+        }
+    }
+</script>
