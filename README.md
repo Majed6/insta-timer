@@ -1,5 +1,5 @@
 # insta-timer
-Insta-timer is a function playes audio and sends a notification after a predefined hours,minutes, and seconds have passed.
+Insta-timer is a function that plays audio and sends a notification after a predefined hours,minutes, and seconds have passed.
 
 URI parameters are `title`, `hours`, `minutes`, `seconds`.
 
